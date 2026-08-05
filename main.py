@@ -1,13 +1,12 @@
 # from machine import I2C, ADC, Pin
-
+#
+# import config
 # from sensors.clock_module import ClockModule
-# from inputs.inputs import Inputs
 # from sensors.environmental_sensor import EnvironmentalSensor
 # from sensors.battery_sensor import BatterySensor
 # from tracking.servo_motor import ServoMotor
 # from tracking.sun_position_calculator import SunPositionCalculator
 # from tracking.single_axis_tracker import SingleAxisTracker
-# from outputs.outputs import Outputs
 # from outputs.oled_display import OLEDDisplay
 # from logging.data_logger import DataLogger
 # from comms.serial_transmitter import SerialTransmitter
