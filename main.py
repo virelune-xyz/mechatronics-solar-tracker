@@ -1,15 +1,17 @@
 # from machine import I2C, ADC, Pin
 
-# from lib.clock_module import ClockModule
-# from lib.environmental_sensor import EnvironmentalSensor
-# from lib.battery_sensor import BatterySensor
-# from lib.servo_motor import ServoMotor
-# from lib.sun_position_calculator import SunPositionCalculator
-# from lib.single_axis_tracker import SingleAxisTracker
-# from lib.oled_display import OLEDDisplay
-# from lib.data_logger import DataLogger
-# from lib.serial_transmitter import SerialTransmitter
-# from lib.system_controller import SystemController
+# from sensors.clock_module import ClockModule
+# from inputs.inputs import Inputs
+# from sensors.environmental_sensor import EnvironmentalSensor
+# from sensors.battery_sensor import BatterySensor
+# from tracking.servo_motor import ServoMotor
+# from tracking.sun_position_calculator import SunPositionCalculator
+# from tracking.single_axis_tracker import SingleAxisTracker
+# from outputs.outputs import Outputs
+# from outputs.oled_display import OLEDDisplay
+# from logging.data_logger import DataLogger
+# from comms.serial_transmitter import SerialTransmitter
+# from system_controller import SystemController
 
 """
 only job is hardware construction (machine.I2C/ADC/pin setup) and wiring the objects into a SystemController
