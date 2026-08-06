@@ -1,10 +1,3 @@
-"""
-outputs/oled_display.py
-
-Wraps the SSD1306 OLED for on-device readout, independent of whatever
-gets sent off-device via a DataTransmitter.
-"""
-
 from outputs.outputs import Outputs
 
 
