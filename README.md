@@ -90,9 +90,3 @@ We use a **WAgile (Waterfall + Agile)** approach to balance scheduling predictab
 * **Waterfall Phases:** Applied to sequential, highly predictable project milestones (e.g., scoping, part procurement, final documentation, and reflections). This prevents overspending before development begins.
 * **Agile Phases:** Applied to the development and testing phases. Because hardware bugs and software errors can be unpredictable, overlapping these phases allows for iterative prototyping and continuous integration.
 * **Buffer Period:** A two-week holiday buffer ensures adequate planning and design work are complete before parts arrive for assembly.
-
-<<<<<<< HEAD
----
-=======
----
->>>>>>> 1ec6adfcdd3bd13b6223772dca47cd9080ce81e9
