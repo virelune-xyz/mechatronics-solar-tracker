@@ -13,8 +13,7 @@ from comms.serial_transmitter import SerialTransmitter
 from system_controller import SystemController
 
 """
-only job is hardware construction (machine.I2C/ADC/pin setup) and wiring the objects into a SystemController
-Only runs once.
+only job is hardware construction (machine.I2C/ADC/pin setup) and wiring the objects into a SystemController. only runs once
 """
 
 def main() -> None:

@@ -26,25 +26,25 @@ The design focuses on simplicity, leveraging only two core input sensors to orch
 ├── 📄 main.py                   <-- Root boot file (Required by the Pico firmware)
 ├── 📄 config.py                 <-- All custom modules and configurations
 ├── 📄 README.md                 <-- Markdown file with the information about the project.
-├── 📄 system_controller.py      <-- Initialisation of the Pico
+├── 📄 system_controller.py      <-- Main layer to wire all classes and objects together
 ├── 📁 comms/                    <-- Communications / Transmitters
     ├── 📄 data_transmitter.py   
     └── 📄 serial_transmitter.py 
 ├── 📁 inputs/  
-    └── 📄 inputs.py              <-- OOP Class handling data saving to CSV
-├── 📁 logs/                      <-- Creates a store of the data required.
+    └── 📄 inputs.py             <-- OOP Class handling data saving to CSV
+├── 📁 logs/                     <-- Creates a store of the data required.
     └── 📄 datta_logger.py 
-├── 📁 models/                    <-- Individual Reading Objects
-    └── 📄 serial_reading.py
-├── 📁 outputs/                   <-- Output devices files
+├── 📁 models/                   <-- Individual Reading Objects
+    └── 📄 sensor_reading.py
+├── 📁 outputs/                  <-- Output devices files
     ├── 📄 oled_display.py   
     └── 📄 outputs.py 
-├── 📁 sensors/                   <-- Files for the individual input sensors.
+├── 📁 sensors/                  <-- Files for the individual input sensors.
     ├── 📄 battery_sensor.py   
     ├── 📄 clock_module.py   
     ├── 📄 environmental_sensor.py   
     └── 📄 sensor.py 
-├── 📁 tracking/                  <-- Files responsible to handle the calculation of the sun position and the servo motors.
+├── 📁 tracking/                 <-- Files responsible to handle the calculation of the sun position and the servo motors.
     ├── 📄 servo_motor.py   
     ├── 📄 single_axis_tracker.py   
     └── 📄 sun_position_calculator.py 
