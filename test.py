@@ -1,44 +1,61 @@
+"""
+test.py
+
+quick manual test for the two tilt servos. sweeps each servo through
+its full range independently (so you can confirm each one is wired to
+the right pin and moves the direction you expect), then moves both
+together in sync (which is how they'll actually be driven once
+single_axis_tracker is filled in).
+
+run this directly on the pico -- e.g. `mpremote run test.py`, or copy
+it to the device and run at the REPL.
+"""
+
 import time
-from machine import I2C, Pin
 
 import config
-from sensors.clock_module import ClockModule
-from sensors.environmental_sensor import EnvironmentalSensor
-from outputs.oled_display import OLEDDisplay
+from tracking.servo_motor import ServoMotor
 
-REFRESH_INTERVAL_SEC = 1
+STEP_DEG = 10
+STEP_DELAY_SEC = 0.3
 
-try:
-	i2c = I2C(
-		config.I2C_ID,
-		sda=Pin(config.I2C_SDA_PIN),
-		scl=Pin(config.I2C_SCL_PIN),
-		freq=config.I2C_FREQ_HZ,
-	)
 
-	display = OLEDDisplay(i2c)
-	display.show_message("Starting up...")
+def sweep(servo: ServoMotor, label: str) -> None:
+    print("sweeping {} ({} -> {} deg)".format(label, servo.min_angle, servo.max_angle))
 
-	clock = ClockModule(i2c)
-	env_sensor = EnvironmentalSensor(i2c)
+    for angle in range(servo.min_angle, servo.max_angle + 1, STEP_DEG):
+        servo.set_angle(angle)
+        print("  {} -> {} deg".format(label, servo.get_angle()))
+        time.sleep(STEP_DELAY_SEC)
 
-	for name, sensor in (("RTC", clock), ("BME280", env_sensor)):
-		sensor._connect()
-		if not sensor.is_ready():
-			display.show_message("{} not found -- check wiring".format(name))
-			raise OSError("{} failed to initialize".format(name))
+    for angle in range(servo.max_angle, servo.min_angle - 1, -STEP_DEG):
+        servo.set_angle(angle)
+        print("  {} -> {} deg".format(label, servo.get_angle()))
+        time.sleep(STEP_DELAY_SEC)
 
-	while True:
-		year, month, day, hour, minute, second, _weekday = clock.get_datetime()
-		env_data = env_sensor.read()
+    servo.center()
+    print("  {} centered at {} deg".format(label, servo.get_angle()))
 
-		display.show_readings({
-			"timestamp": (year, month, day, hour, minute, second),
-			"temperature": env_data["temperature"],
-			"humidity": env_data["humidity"],
-			"pressure": env_data["pressure"],
-		})
 
-		time.sleep(REFRESH_INTERVAL_SEC)
-except KeyboardInterrupt:
-	display.clear()
+def main() -> None:
+    servo1 = ServoMotor(config.SERVO_1_PIN, config.SERVO_MIN_ANGLE, config.SERVO_MAX_ANGLE)
+    servo2 = ServoMotor(config.SERVO_2_PIN, config.SERVO_MIN_ANGLE, config.SERVO_MAX_ANGLE)
+
+    sweep(servo1, "servo1 (pin {})".format(config.SERVO_1_PIN))
+    time.sleep(1)
+    sweep(servo2, "servo2 (pin {})".format(config.SERVO_2_PIN))
+    time.sleep(1)
+
+    print("moving both together")
+    midpoint = (config.SERVO_MIN_ANGLE + config.SERVO_MAX_ANGLE) // 2
+    for angle in (config.SERVO_MIN_ANGLE, midpoint, config.SERVO_MAX_ANGLE, midpoint):
+        servo1.set_angle(angle)
+        servo2.set_angle(angle)
+        print("  both -> {} deg".format(angle))
+        time.sleep(1)
+
+    print("done -- both servos centered at {} deg".format(midpoint))
+
+
+if __name__ == "__main__":
+    main()

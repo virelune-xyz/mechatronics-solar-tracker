@@ -3,8 +3,10 @@
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticSeverityOverrides": {
         "reportMissingModuleSource": "none",
-		"reportMissingImports": "warning",
-    	"reportAttributeAccessIssue": "warning"
+        "reportMissingImports": "warning",
+        "reportAttributeAccessIssue": "warning",
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalSubscript": "none"
     },
     "python.terminal.activateEnvironment": false,
     "micropico.openOnStart": true,
@@ -12,8 +14,8 @@
         "~/.micropico-stubs/included"
     ],
     "python.analysis.extraPaths": [
-		"./lib",
-		"./",
+        "./lib",
+        "./",
         "~/.micropico-stubs/included"
-    ],
+    ]
 }

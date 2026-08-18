@@ -1,7 +1,7 @@
 from outputs.outputs import Outputs
 
 try:
-	import ssd1306
+	import drivers.ssd1306
 except ImportError:
 	ssd1306 = None  # surfaced as a clear error in _connect(), not at import time
 

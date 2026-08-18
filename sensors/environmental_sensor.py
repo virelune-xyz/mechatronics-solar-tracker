@@ -1,7 +1,7 @@
 from sensors.sensor import Sensor
 
 try:
-	import bme280_float as bme280
+	import drivers.bme280_float as bme280
 except ImportError:
 	bme280 = None  # surfaced as a clear error in _connect(), not at import time
 
