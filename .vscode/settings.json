@@ -2,7 +2,9 @@
     "python.languageServer": "Pylance",
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticSeverityOverrides": {
-        "reportMissingModuleSource": "none"
+        "reportMissingModuleSource": "none",
+		"reportMissingImports": "warning",
+    	"reportAttributeAccessIssue": "warning"
     },
     "python.terminal.activateEnvironment": false,
     "micropico.openOnStart": true,
@@ -10,6 +12,8 @@
         "~/.micropico-stubs/included"
     ],
     "python.analysis.extraPaths": [
+		"./lib",
+		"./",
         "~/.micropico-stubs/included"
-    ]
+    ],
 }

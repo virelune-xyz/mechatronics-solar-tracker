@@ -26,8 +26,7 @@ class ClockModule(Sensor):
 			self.rtc = _DS3231_ADDRESS
 		else:
 			raise OSError(
-				"DS3231 not responding at 0x{:02X} -- check SDA/SCL wiring "
-				"and that the RTC has power.".format(_DS3231_ADDRESS)
+				"ds3231 not responding at 0x{:02X}; check wiring maybe and that the rtc has power".format(_DS3231_ADDRESS)
 			)
 
 	def read(self) -> dict:
@@ -56,7 +55,11 @@ class ClockModule(Sensor):
 		return (year, month, day, hour, minute, second, weekday)
 
 	def set_datetime(self, dt: tuple) -> None:
-		"""write a new datetime to the rtc"""
+		"""
+		write a new datetime to the rtc
+
+		format: (year, month, day, hour, minute, second, weekday)
+		"""
 		year, month, day, hour, minute, second, weekday = dt
 
 		payload = bytes([

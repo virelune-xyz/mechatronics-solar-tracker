@@ -1,7 +1,7 @@
 from sensors.sensor import Sensor
 
 try:
-	import bme280
+	import bme280_float as bme280
 except ImportError:
 	bme280 = None  # surfaced as a clear error in _connect(), not at import time
 
@@ -25,8 +25,7 @@ class EnvironmentalSensor(Sensor):
 		"""
 		if bme280 is None:
 			raise ImportError(
-				"bme280 driver not found -- install with `mip install bme280` "
-				"before running this on-device."
+				"bme280 driver not found"
 			)
 
 		present = self.i2c.scan()
@@ -36,34 +35,33 @@ class EnvironmentalSensor(Sensor):
 				break
 		else:
 			raise OSError(
-				"BME280 not found on the I2C bus at 0x76 or 0x77 -- "
-				"check wiring and power."
+				"bme280 not found on the i2c bus at 0x76 or 0x77 -- "
 			)
 
 		self.bme = bme280.BME280(i2c=self.i2c, address=self._address)
 
 	def read(self) -> dict:
 		"""returns {"temperature": float, "humidity": float, "pressure": float}"""
+		# Returns (temp, pressure_in_Pa, humidity)
+		temp, press, hum = self.bme.read_compensated_data()
 		return {
-				"temperature": self.read_temperature(),
-				"humidity": self.read_humidity(),
-				"pressure": self.read_pressure(),
-			}
+			"temperature": temp,              # °C
+			"humidity": hum,                  # % RH
+			"pressure": press / 100.0,        # Convert Pa to hPa
+		}
 
 	def is_ready(self) -> bool:
 		return self.bme is not None
 
+
 	def read_temperature(self) -> float:
 		"""deg celsius"""
-		temperature, _pressure, _humidity = self.bme.raw_values
-		return temperature
+		return self.bme.read_compensated_data()[0]
 
 	def read_humidity(self) -> float:
 		"""relative humidity in %"""
-		_temperature, _pressure, humidity = self.bme.raw_values
-		return humidity
+		return self.bme.read_compensated_data()[2]
 
 	def read_pressure(self) -> float:
 		"""barometric pressure in hPa"""
-		_temperature, pressure, _humidity = self.bme.raw_values
-		return pressure
+		return self.bme.read_compensated_data()[1] / 100.0

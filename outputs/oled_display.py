@@ -23,8 +23,7 @@ class OLEDDisplay(Outputs):
 	def _connect(self) -> None:
 		if ssd1306 is None:
 			raise ImportError(
-				"ssd1306 driver not found -- install with `mip install ssd1306` "
-				"before running this on-device."
+				"ssd1306 driver not found"
 			)
 		self.driver = ssd1306.SSD1306_I2C(self.width, self.height, self.i2c)
 		self.clear()

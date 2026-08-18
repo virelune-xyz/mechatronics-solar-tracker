@@ -3,14 +3,14 @@ just used for pin assignments and stuff like that so theres a nicer way to chang
 """
 
 # i2c bus (clock, envsensor, oled)
-I2C_ID = 0          # eg 0
-I2C_SDA_PIN = 0     # eg 0  (GPIO0)
-I2C_SCL_PIN = 1
+I2C_ID = 1          # eg 0
+I2C_SDA_PIN = 2     # eg 0  (GPIO0)
+I2C_SCL_PIN = 3
 I2C_FREQ_HZ = 400_000
 
 # servo signal pins
-SERVO_1_PIN = 2     # eg 2  (GPIO2)
-SERVO_2_PIN = 3 
+SERVO_1_PIN = 8     # eg 2  (GPIO2)
+SERVO_2_PIN = 9 
 SERVO_MIN_ANGLE = 0
 SERVO_MAX_ANGLE = 180
 
