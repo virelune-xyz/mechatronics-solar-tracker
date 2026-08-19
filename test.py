@@ -1,16 +1,3 @@
-"""
-test.py
-
-quick manual test for the two tilt servos. sweeps each servo through
-its full range independently (so you can confirm each one is wired to
-the right pin and moves the direction you expect), then moves both
-together in sync (which is how they'll actually be driven once
-single_axis_tracker is filled in).
-
-run this directly on the pico -- e.g. `mpremote run test.py`, or copy
-it to the device and run at the REPL.
-"""
-
 import time
 
 import config

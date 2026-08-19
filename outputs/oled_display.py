@@ -21,7 +21,7 @@ class OLEDDisplay(Outputs):
 		self._connect()
 
 	def _connect(self):
-		if ssd1306 is None:
+		if ssd1306 == None:
 			raise ImportError(
 				"ssd1306 driver not found"
 			)
@@ -40,7 +40,7 @@ class OLEDDisplay(Outputs):
 		y = 0
 
 		timestamp = reading.get("timestamp")
-		if timestamp is not None:
+		if timestamp != None:
 			year, month, day, hour, minute, second = timestamp[:6]
 			self.driver.text(
 				"{:04d}-{:02d}-{:02d}".format(year, month, day), 0, y
@@ -52,18 +52,23 @@ class OLEDDisplay(Outputs):
 			y += _LINE_HEIGHT_PX
 
 		temperature = reading.get("temperature")
-		if temperature is not None:
+		if temperature != None:
 			self.driver.text("Temp: {:.1f} C".format(temperature), 0, y)
 			y += _LINE_HEIGHT_PX
 
 		humidity = reading.get("humidity")
-		if humidity is not None:
+		if humidity != None:
 			self.driver.text("Hum:  {:.1f} %".format(humidity), 0, y)
 			y += _LINE_HEIGHT_PX
 
 		pressure = reading.get("pressure")
-		if pressure is not None:
+		if pressure != None:
 			self.driver.text("Pres: {:.1f} hPa".format(pressure), 0, y)
+			y += _LINE_HEIGHT_PX
+
+		tilt_angle = reading.get("tilt_angle")
+		if tilt_angle != None:
+			self.driver.text("Tilt: {} deg".format(tilt_angle), 0, y)
 			y += _LINE_HEIGHT_PX
 
 		self.driver.show()

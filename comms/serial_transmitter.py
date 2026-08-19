@@ -2,6 +2,8 @@
 sends SensorReadings out over usb as CSV rows
 """
 
+import sys
+
 from comms.data_transmitter import DataTransmitter
 
 
@@ -16,16 +18,25 @@ class SerialTransmitter(DataTransmitter):
         self._connect()
 
     def _connect(self):
-        raise NotImplementedError
+        # writes go out over the same usb connection the repl uses
+        self.uart_or_usb = sys.stdout
 
     def send(self, reading) -> bool:
         """
         dont format specially and send
         """
-        raise NotImplementedError
+        try:
+            self.uart_or_usb.write(str(reading.to_dict()) + "\n")
+            return True
+        except Exception:
+            return False
 
     def send_csv_row(self, reading) -> bool:
         """
         format to csv and send
         """
-        raise NotImplementedError
+        try:
+            self.uart_or_usb.write(reading.to_csv_row() + "\n")
+            return True
+        except Exception:
+            return False

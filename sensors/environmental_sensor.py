@@ -23,7 +23,7 @@ class EnvironmentalSensor(Sensor):
 		"""
 		instantiate the underlying bme280 driver against self.i2c and assign it to self.bme. separate from init() so software and hardware failures are split
 		"""
-		if bme280 is None:
+		if bme280 == None:
 			raise ImportError(
 				"bme280 driver not found"
 			)
@@ -51,7 +51,7 @@ class EnvironmentalSensor(Sensor):
 		}
 
 	def is_ready(self) -> bool:
-		return self.bme is not None
+		return self.bme != None
 
 
 	def read_temperature(self) -> float:

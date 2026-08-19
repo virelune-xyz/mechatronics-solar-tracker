@@ -2,7 +2,6 @@
 data container
 """
 
-
 class SensorReading:
     """
     timestamped snapshot of environmental state
@@ -23,7 +22,17 @@ class SensorReading:
         self.pressure = pressure
 
     def to_dict(self) -> dict:
-        raise NotImplementedError
+        return {
+            "timestamp": self.timestamp,
+            "tilt_angle": self.tilt_angle,
+            "temperature": self.temperature,
+            "humidity": self.humidity,
+            "pressure": self.pressure,
+        }
 
     def to_csv_row(self) -> str:
-        raise NotImplementedError
+        year, month, day, hour, minute, second = self.timestamp[:6]
+        return "{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d},{},{:.2f},{:.2f},{:.2f}".format(
+            year, month, day, hour, minute, second,
+            self.tilt_angle, self.temperature, self.humidity, self.pressure,
+        )

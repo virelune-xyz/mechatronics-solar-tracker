@@ -21,64 +21,78 @@ The design focuses on simplicity, leveraging only two core input sensors to orch
 # Project Structure
 
 ```text
-📁 Solar_Tracker_Project/
-├── 📄 .micropico/               <-- Local VS Code workspace configuration
-├── 📄 main.py                   <-- Root boot file (Required by the Pico firmware)
-├── 📄 config.py                 <-- All custom modules and configurations
-├── 📄 README.md                 <-- Markdown file with the information about the project.
-├── 📄 system_controller.py      <-- Main layer to wire all classes and objects together
-├── 📁 comms/                    <-- Communications / Transmitters
-    ├── 📄 data_transmitter.py   
-    └── 📄 serial_transmitter.py 
-├── 📁 inputs/  
-    └── 📄 inputs.py             <-- OOP Class handling data saving to CSV
-├── 📁 logs/                     <-- Creates a store of the data required.
-    └── 📄 datta_logger.py 
-├── 📁 models/                   <-- Individual Reading Objects
-    └── 📄 sensor_reading.py
-├── 📁 outputs/                  <-- Output devices files
-    ├── 📄 oled_display.py   
-    └── 📄 outputs.py 
-├── 📁 sensors/                  <-- Files for the individual input sensors.
-    ├── 📄 clock_module.py   
-    ├── 📄 environmental_sensor.py   
-    └── 📄 sensor.py 
-├── 📁 tracking/                 <-- Files responsible to handle the calculation of the sun position and the servo motors.
-    ├── 📄 servo_motor.py   
-    ├── 📄 single_axis_tracker.py   
-    └── 📄 sun_position_calculator.py 
-
+📁 mechatronics-solar-tracker/
+├── 📄 .gitignore                		<-- Git ignore rules
+├── 📄 .micropico                		<-- Local VS Code workspace configuration
+├── 📄 main.py                   		<-- Root boot file (Required by the Pico firmware)
+├── 📄 config.py                 		<-- Pin assignments and system configuration
+├── 📄 README.md                 		<-- Markdown file with project information
+├── 📄 system_controller.py      		<-- Main orchestrator that wires all components together
+├── 📄 test.py                   		<-- Manual servo motor testing utility
+├── 📁 comms/                    		<-- Communications / Transmitters
+│   ├── 📄 data_transmitter.py   		<-- Abstract base for communications
+│   └── 📄 serial_transmitter.py 		<-- USB serial transmitter (dict/CSV output)
+├── 📁 drivers/                  		<-- Hardware driver libraries
+│   ├── 📄 bme280_float.py       		<-- BME280 environmental sensor driver
+│   └── 📄 ssd1306.py            		<-- SSD1306 OLED display driver
+├── 📁 inputs/                   		<-- Input device abstractions
+│   └── 📄 inputs.py             		<-- Marker superclass for input devices
+├── 📁 logs/                     		<-- Data logging and storage
+│   └── 📄 data_logger.py        		<-- In-memory log of sensor readings
+├── 📁 models/                   		<-- Data models and containers
+│   └── 📄 sensor_reading.py     		<-- Timestamped sensor data container
+├── 📁 outputs/                  		<-- Output device drivers
+│   ├── 📄 oled_display.py       		<-- OLED display interface
+│   └── 📄 outputs.py            		<-- Marker superclass for output devices
+├── 📁 sensors/                  		<-- Input sensor drivers
+│   ├── 📄 clock_module.py       		<-- DS3231 RTC driver
+│   ├── 📄 environmental_sensor.py 		<-- BME280 sensor wrapper
+│   └── 📄 sensor.py             		<-- Abstract base class for sensors
+└── 📁 tracking/                 		<-- Sun tracking and motor control
+    ├── 📄 servo_motor.py        		<-- PWM servo motor driver
+    ├── 📄 single_axis_tracker.py 		<-- Dual servo tracker controller
+    └── 📄 sun_position_calculator.py 	<-- Solar position calculations
 ```
 
 
 # File Organisation
-## Directory - Input Sensors (/sensors/):
-    Clock Module:
-    Environmental Sensor: 
-    Sensor: It is an abstract base class for all input/sensing hardware. 
 
-## Directory: Communications / Transmitters (/comms/)
-    Data Transmitter: It is an abstract base for communications
-    Serial Transmitter: It sends SensorReadings out over usb formatted as CSV rows
+## Core Files
+- **main.py**: Entry point that initializes all hardware components and starts the system controller
+- **config.py**: Centralized configuration for pin assignments, I2C bus settings, and system parameters
+- **system_controller.py**: Main orchestrator that coordinates sensor reading, sun tracking, display updates, logging, and data transmission in a continuous loop
+- **test.py**: Utility for manual testing of servo motor movement and pin validation
 
-## Directory: Outputs (/output/)
-    OLED Display:
-    Outputs: It is a marker superclass which does nothing :/
+## Directory: Communications (/comms/)
+- **data_transmitter.py**: Abstract base class for transmission protocols
+- **serial_transmitter.py**: USB serial transmitter that sends sensor readings as a dictionary/CSV rows
+
+## Directory: Drivers (/drivers/)
+- **bme280_float.py**: BME280 environmental sensor driver (third-party MicroPython library)
+- **ssd1306.py**: SSD1306 OLED display driver (third-party MicroPython library)
+
+## Directory: Inputs (/inputs/)
+- **inputs.py**: Marker superclass for all input devices
+
+## Directory: Logs (/logs/)
+- **data_logger.py**: In-memory circular buffer for recent sensor readings (FIFO with configurable max entries)
+
+## Directory: Models (/models/)
+- **sensor_reading.py**: Timestamped container for sensor data with methods to export as dict or CSV
+
+## Directory: Outputs (/outputs/)
+- **outputs.py**: Marker superclass for all output devices
+- **oled_display.py**: I2C OLED display interface that renders readings and messages
+
+## Directory: Sensors (/sensors/)
+- **sensor.py**: Abstract base class defining the interface for all sensor subclasses
+- **clock_module.py**: DS3231 real-time clock driver providing timestamps for tracking and logging
+- **environmental_sensor.py**: Wrapper around the BME280 driver that reads temperature, humidity, and pressure
 
 ## Directory: Tracking (/tracking/)
-
-[//]: # ( The class in Servo Motors assumes there is only one servo motor. This is fixed in the Single Axis Tracker file. )
-
-    Servo Motors: Class for Servo Motors 
-    Single Axis Tracker: It moves two servomotors to keep them angled towards sun
-    Sun Position Calculator: When it recieves a timestamp and a fixed site location colculate suns position.
-
-## Single File Directories:
-    Inputs (/inputs/inputs.py): A marker superclass for all inputs.
-
-    Logs (/logs/data_logger.py): An in-memory store of recent sensorreadings, used for the on-device history.
-
-    Models (/models/sensor_reading.py): It is a Data Container
+- **sun_position_calculator.py**: Calculates solar elevation and azimuth using Cooper's equation
+- **servo_motor.py**: PWM-based servo motor driver with angle clamping; assumes single servo logic
+- **single_axis_tracker.py**: Coordinates two servo motors to track the sun, with mirroring for opposite-side mounting
 
 ---
 
