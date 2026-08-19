@@ -25,7 +25,7 @@ class ServoMotor(Outputs):
         self._pin = pin
         self._configure_pwm()
 
-    def _configure_pwm(self) -> None:
+    def _configure_pwm(self):
         """
         set up machine.PWM on self._pin at the correct frequency and assign it to self.pwm
         """
@@ -35,7 +35,7 @@ class ServoMotor(Outputs):
         # undefined until the first set_angle() call
         self.center()
 
-    def set_angle(self, angle: int) -> None:
+    def set_angle(self, angle: int):
         """
         move the servo to angle degrees, clamped to self.min_angle and self.max_angle, updates self.current_angle
         """
@@ -49,6 +49,6 @@ class ServoMotor(Outputs):
         """last commanded angle"""
         return self.current_angle
 
-    def center(self) -> None:
+    def center(self):
         """move to  midpoint of min_angle and max_angle"""
         self.set_angle((self.min_angle + self.max_angle) // 2)

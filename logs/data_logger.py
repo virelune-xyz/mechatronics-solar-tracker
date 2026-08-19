@@ -14,7 +14,7 @@ class DataLogger:
         self.readings = []
         self.max_entries = max_entries
 
-    def add_reading(self, reading: SensorReading) -> None:
+    def add_reading(self, reading: SensorReading):
         """
         append reading; once len(self.readings) exceeds max_entries, the oldest entry should be dropped
         """
@@ -26,5 +26,5 @@ class DataLogger:
     def get_all(self) -> list:
         raise NotImplementedError
 
-    def clear(self) -> None:
+    def clear(self):
         raise NotImplementedError

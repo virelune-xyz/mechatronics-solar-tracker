@@ -33,7 +33,7 @@ class SystemController:
         self.transmitter = transmitter
         self.update_interval_sec = update_interval_sec
 
-    def initialize(self) -> None:
+    def initialize(self):
         """
         make sure every sensor reports is_ready() before entering run(), and show a startup message on the display, if fails then display a message on the oled
         """
@@ -45,17 +45,17 @@ class SystemController:
         """
         raise NotImplementedError
 
-    def update_display(self, reading: SensorReading) -> None:
+    def update_display(self, reading: SensorReading):
         raise NotImplementedError
 
-    def track_sun(self) -> None:
+    def track_sun(self):
         """delegate to self.tracker.track() using the current rtc time"""
         raise NotImplementedError
 
-    def transmit_data(self, reading: SensorReading) -> None:
+    def transmit_data(self, reading: SensorReading):
         raise NotImplementedError
 
-    def run(self) -> None:
+    def run(self):
         """
         main loop: track_sun() -> collect_data() -> log -> display -> transmit -> sleep(update_interval_sec) -> repeat - runs forever once called from main
         """

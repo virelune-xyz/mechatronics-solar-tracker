@@ -17,19 +17,19 @@ class SingleAxisTracker:
         self.servo2 = servo2
         self.calculator = calculator
 
-    def track(self, dt: tuple) -> None:
+    def track(self, dt: tuple):
         """
         calc the suns current elevation for timestamp dt via self.calculator then call self.move_to() with the resulting angle. calls once per systemcontroller loop iteration
         """
         raise NotImplementedError
 
-    def move_to(self, elevation: float) -> None:
+    def move_to(self, elevation: float):
         """
         move both servos to elevation; need to mirror one (change the angle to be the opposite) since theyre on opposite sides
         """
         raise NotImplementedError
 
-    def park(self) -> None:
+    def park(self):
         """
 		move both servos to a center position - probably not needed
         """

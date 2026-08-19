@@ -15,7 +15,7 @@ class SerialTransmitter(DataTransmitter):
         self._baudrate = baudrate
         self._connect()
 
-    def _connect(self) -> None:
+    def _connect(self):
         raise NotImplementedError
 
     def send(self, reading) -> bool:

@@ -21,7 +21,7 @@ class ClockModule(Sensor):
 		self.rtc = None  # populated in _connect(); ds3231 driver instance
 		self._connect()
 
-	def _connect(self) -> None:
+	def _connect(self):
 		if self.is_ready():
 			self.rtc = _DS3231_ADDRESS
 		else:
@@ -54,7 +54,7 @@ class ClockModule(Sensor):
 
 		return (year, month, day, hour, minute, second, weekday)
 
-	def set_datetime(self, dt: tuple) -> None:
+	def set_datetime(self, dt: tuple):
 		"""
 		write a new datetime to the rtc
 

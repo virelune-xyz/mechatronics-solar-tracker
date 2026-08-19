@@ -20,7 +20,7 @@ STEP_DEG = 10
 STEP_DELAY_SEC = 0.3
 
 
-def sweep(servo: ServoMotor, label: str) -> None:
+def sweep(servo: ServoMotor, label: str):
     print("sweeping {} ({} -> {} deg)".format(label, servo.min_angle, servo.max_angle))
 
     for angle in range(servo.min_angle, servo.max_angle + 1, STEP_DEG):
@@ -37,7 +37,7 @@ def sweep(servo: ServoMotor, label: str) -> None:
     print("  {} centered at {} deg".format(label, servo.get_angle()))
 
 
-def main() -> None:
+def main():
     servo1 = ServoMotor(config.SERVO_1_PIN, config.SERVO_MIN_ANGLE, config.SERVO_MAX_ANGLE)
     servo2 = ServoMotor(config.SERVO_2_PIN, config.SERVO_MIN_ANGLE, config.SERVO_MAX_ANGLE)
 

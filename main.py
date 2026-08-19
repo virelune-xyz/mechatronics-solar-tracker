@@ -16,7 +16,7 @@ from system_controller import SystemController
 only job is hardware construction (machine.I2C/ADC/pin setup) and wiring the objects into a SystemController. only runs once
 """
 
-def main() -> None:
+def main():
     raise NotImplementedError(
         "construct hardware handles, build a SystemController, call initialize() and run()."
     )

@@ -20,7 +20,7 @@ class OLEDDisplay(Outputs):
 		self.driver = None  # populated in _connect(); ssd1306.SSD1306_I2C instance
 		self._connect()
 
-	def _connect(self) -> None:
+	def _connect(self):
 		if ssd1306 is None:
 			raise ImportError(
 				"ssd1306 driver not found"
@@ -28,11 +28,11 @@ class OLEDDisplay(Outputs):
 		self.driver = ssd1306.SSD1306_I2C(self.width, self.height, self.i2c)
 		self.clear()
 
-	def clear(self) -> None:
+	def clear(self):
 		self.driver.fill(0)
 		self.driver.show()
 
-	def show_readings(self, reading) -> None:
+	def show_readings(self, reading):
 		"""
 		render a sensorreading to the screen
 		"""
@@ -73,7 +73,7 @@ class OLEDDisplay(Outputs):
 
 		self.driver.show()
 
-	def show_message(self, text: str) -> None:
+	def show_message(self, text: str):
 		"""render a message (maybe error or failure or whatever)"""
 		self.driver.fill(0)
 		chars_per_line = self.width // 8

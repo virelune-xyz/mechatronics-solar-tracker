@@ -19,7 +19,7 @@ class EnvironmentalSensor(Sensor):
 		self.bme = None  # populated in _connect(); bme280 driver instance
 		self._connect()
 
-	def _connect(self) -> None:
+	def _connect(self):
 		"""
 		instantiate the underlying bme280 driver against self.i2c and assign it to self.bme. separate from init() so software and hardware failures are split
 		"""
