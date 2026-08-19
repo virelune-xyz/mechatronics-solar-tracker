@@ -40,7 +40,6 @@ The design focuses on simplicity, leveraging only two core input sensors to orch
     ├── 📄 oled_display.py   
     └── 📄 outputs.py 
 ├── 📁 sensors/                  <-- Files for the individual input sensors.
-    ├── 📄 battery_sensor.py   
     ├── 📄 clock_module.py   
     ├── 📄 environmental_sensor.py   
     └── 📄 sensor.py 
@@ -54,7 +53,6 @@ The design focuses on simplicity, leveraging only two core input sensors to orch
 
 # File Organisation
 ## Directory - Input Sensors (/sensors/):
-    Battery Sensor:
     Clock Module:
     Environmental Sensor: 
     Sensor: It is an abstract base class for all input/sensing hardware. 

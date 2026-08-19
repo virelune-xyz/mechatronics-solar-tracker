@@ -3,7 +3,6 @@ from machine import I2C, ADC, Pin
 import config
 from sensors.clock_module import ClockModule
 from sensors.environmental_sensor import EnvironmentalSensor
-from sensors.battery_sensor import BatterySensor
 from tracking.servo_motor import ServoMotor
 from tracking.sun_position_calculator import SunPositionCalculator
 from tracking.single_axis_tracker import SingleAxisTracker

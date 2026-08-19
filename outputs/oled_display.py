@@ -66,11 +66,6 @@ class OLEDDisplay(Outputs):
 			self.driver.text("Pres: {:.1f} hPa".format(pressure), 0, y)
 			y += _LINE_HEIGHT_PX
 
-		battery_percentage = reading.get("battery_percentage")
-		if battery_percentage is not None:
-			self.driver.text("Batt: {:.0f} %".format(battery_percentage), 0, y)
-			y += _LINE_HEIGHT_PX
-
 		self.driver.show()
 
 	def show_message(self, text: str):

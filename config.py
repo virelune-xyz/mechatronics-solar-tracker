@@ -11,12 +11,8 @@ I2C_FREQ_HZ = 400_000
 # servo signal pins
 SERVO_1_PIN = 8     # eg 2  (GPIO2)
 SERVO_2_PIN = 9 
-SERVO_MIN_ANGLE = 0
-SERVO_MAX_ANGLE = 180
-
-# battery voltage sense (through the resistor divider)
-BATTERY_ADC_PIN = 26         # eg 26 (GPIO26)
-BATTERY_DIVIDER_RATIO = 2.0    # undoes the divider
+SERVO_MIN_ANGLE = 45
+SERVO_MAX_ANGLE = 135
 
 # serial transmitter
 SERIAL_BAUDRATE = 115200
