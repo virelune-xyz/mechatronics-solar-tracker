@@ -29,26 +29,33 @@ class ServoMotor(Outputs):
         """
         set up machine.PWM on self._pin at the correct frequency and assign it to self.pwm
         """
+        print("[DEBUG][servo_motor] configuring PWM on pin {} at {}Hz".format(self._pin, _PWM_FREQ_HZ))
         self.pwm = PWM(Pin(self._pin))
         self.pwm.freq(_PWM_FREQ_HZ)
-        # start at a known safe position rather than leaving duty_u16
-        # undefined until the first set_angle() call
+        # start at a known safe position rather than leaving duty_u16 undefined until the first set_angle() call
         self.center()
 
-    def set_angle(self, angle: int):
+    def set_angle(self, angle: float):
         """
         move the servo to angle degrees, clamped to self.min_angle and self.max_angle, updates self.current_angle
         """
         clamped = max(self.min_angle, min(self.max_angle, angle))
         pulse_us = _PULSE_MIN_US + (clamped / 180) * (_PULSE_MAX_US - _PULSE_MIN_US)
         duty_u16 = int((pulse_us / _PERIOD_US) * 65535)
+        print(
+            "[DEBUG][servo_motor] pin {}: set_angle({}) -> clamped={} pulse_us={:.1f} duty_u16={}".format(
+                self._pin, angle, clamped, pulse_us, duty_u16
+            )
+        )
         self.pwm.duty_u16(duty_u16)
         self.current_angle = clamped
 
-    def get_angle(self) -> int:
+    def get_angle(self) -> float:
         """last commanded angle"""
+        print("[DEBUG][servo_motor] pin {}: get_angle() -> {}".format(self._pin, self.current_angle))
         return self.current_angle
 
     def center(self):
         """move to  midpoint of min_angle and max_angle"""
+        print("[DEBUG][servo_motor] pin {}: center()".format(self._pin))
         self.set_angle((self.min_angle + self.max_angle) // 2)

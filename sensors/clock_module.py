@@ -22,27 +22,35 @@ class ClockModule(Sensor):
 		self._connect()
 
 	def _connect(self):
+		print("[DEBUG][clock_module] connecting to DS3231 at 0x{:02X}".format(_DS3231_ADDRESS))
 		if self.is_ready():
 			self.rtc = _DS3231_ADDRESS
+			print("[DEBUG][clock_module] connected OK")
 		else:
+			print("[DEBUG][clock_module] connect FAILED; no ACK from 0x{:02X}".format(_DS3231_ADDRESS))
 			raise OSError(
 				"ds3231 not responding at 0x{:02X}; check wiring maybe and that the rtc has power".format(_DS3231_ADDRESS)
 			)
 
 	def read(self) -> dict:
 		"""returns {"timestamp": tuple}"""
-		return {"timestamp": self.get_datetime()}
+		result = {"timestamp": self.get_datetime()}
+		print("[DEBUG][clock_module] read() ->", result)
+		return result
 
 	def is_ready(self) -> bool:
 		try:
 			self.i2c.readfrom_mem(_DS3231_ADDRESS, _REG_SECONDS, 1)
+			print("[DEBUG][clock_module] is_ready() -> True")
 			return True
-		except OSError:
+		except OSError as e:
+			print("[DEBUG][clock_module] is_ready() -> False ({})".format(e))
 			return False
 
 	def get_datetime(self) -> tuple:
 		"""return the current (year, month, day, hour, minute, second) tuple"""
 		raw = self.i2c.readfrom_mem(_DS3231_ADDRESS, _REG_SECONDS, 7)
+		print("[DEBUG][clock_module] raw registers:", list(raw))
 		
 		second = _bcd_to_dec(raw[0] & 0x7F)
 		minute = _bcd_to_dec(raw[1] & 0x7F)
@@ -52,7 +60,9 @@ class ClockModule(Sensor):
 		month = _bcd_to_dec(raw[5] & 0x1F)  # bit7 (century) ignored
 		year = 2000 + _bcd_to_dec(raw[6])
 
-		return (year, month, day, hour, minute, second, weekday)
+		result = (year, month, day, hour, minute, second, weekday)
+		print("[DEBUG][clock_module] get_datetime() ->", result)
+		return result
 
 	def set_datetime(self, dt: tuple):
 		"""
@@ -60,6 +70,7 @@ class ClockModule(Sensor):
 
 		format: (year, month, day, hour, minute, second, weekday)
 		"""
+		print("[DEBUG][clock_module] set_datetime({})".format(dt))
 		year, month, day, hour, minute, second, weekday = dt
 
 		payload = bytes([
@@ -72,4 +83,4 @@ class ClockModule(Sensor):
 			_dec_to_bcd(year % 100),
 		])
 		self.i2c.writeto_mem(_DS3231_ADDRESS, _REG_SECONDS, payload)
-
+		print("[DEBUG][clock_module] set_datetime() write complete")

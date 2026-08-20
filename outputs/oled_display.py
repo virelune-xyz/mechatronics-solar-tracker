@@ -1,7 +1,7 @@
 from outputs.outputs import Outputs
 
 try:
-	import drivers.ssd1306
+	import drivers.ssd1306 as ssd1306
 except ImportError:
 	ssd1306 = None  # surfaced as a clear error in _connect(), not at import time
 
@@ -21,14 +21,18 @@ class OLEDDisplay(Outputs):
 		self._connect()
 
 	def _connect(self):
+		print("[DEBUG][oled_display] connecting to SSD1306 ({}x{})".format(self.width, self.height))
 		if ssd1306 == None:
+			print("[DEBUG][oled_display] ssd1306 driver import FAILED")
 			raise ImportError(
 				"ssd1306 driver not found"
 			)
 		self.driver = ssd1306.SSD1306_I2C(self.width, self.height, self.i2c)
+		print("[DEBUG][oled_display] connected OK")
 		self.clear()
 
 	def clear(self):
+		print("[DEBUG][oled_display] clear()")
 		self.driver.fill(0)
 		self.driver.show()
 
@@ -36,6 +40,7 @@ class OLEDDisplay(Outputs):
 		"""
 		render a sensorreading to the screen
 		"""
+		print("[DEBUG][oled_display] show_readings(reading={})".format(reading))
 		self.driver.fill(0)
 		y = 0
 
@@ -68,13 +73,15 @@ class OLEDDisplay(Outputs):
 
 		tilt_angle = reading.get("tilt_angle")
 		if tilt_angle != None:
-			self.driver.text("Tilt: {} deg".format(tilt_angle), 0, y)
+			self.driver.text("Tilt: {:.4} deg".format(tilt_angle), 0, y)
 			y += _LINE_HEIGHT_PX
 
 		self.driver.show()
+		print("[DEBUG][oled_display] show_readings() done, {} lines drawn".format(y // _LINE_HEIGHT_PX))
 
 	def show_message(self, text: str):
 		"""render a message (maybe error or failure or whatever)"""
+		print("[DEBUG][oled_display] show_message({!r})".format(text))
 		self.driver.fill(0)
 		chars_per_line = self.width // 8
 		y = 0

@@ -1,50 +1,20 @@
-import time
+from machine import I2C, Pin
 
 import config
-from tracking.servo_motor import ServoMotor
-
-STEP_DEG = 10
-STEP_DELAY_SEC = 0.3
+from sensors.clock_module import ClockModule
 
 
-def sweep(servo: ServoMotor, label: str):
-	print("sweeping {} ({} -> {} deg)".format(label, servo.min_angle, servo.max_angle))
+def main() -> None:
+	i2c = I2C(
+		config.I2C_ID,
+		sda=Pin(config.I2C_SDA_PIN),
+		scl=Pin(config.I2C_SCL_PIN),
+		freq=config.I2C_FREQ_HZ,
+	)
+	clock = ClockModule(i2c)
+	clock.set_datetime((2026, 8, 20, 16, 0, 0, 0))
+	print(clock.get_datetime())
 
-	for angle in range(servo.min_angle, servo.max_angle + 1, STEP_DEG):
-		servo.set_angle(angle)
-		print("  {} -> {} deg".format(label, servo.get_angle()))
-		time.sleep(STEP_DELAY_SEC)
-
-	for angle in range(servo.max_angle, servo.min_angle - 1, -STEP_DEG):
-		servo.set_angle(angle)
-		print("  {} -> {} deg".format(label, servo.get_angle()))
-		time.sleep(STEP_DELAY_SEC)
-
-	servo.center()
-	print("  {} centered at {} deg".format(label, servo.get_angle()))
-
-
-def main():
-	servo1 = ServoMotor(config.SERVO_1_PIN, config.SERVO_MIN_ANGLE, config.SERVO_MAX_ANGLE)
-	servo2 = ServoMotor(config.SERVO_2_PIN, config.SERVO_MIN_ANGLE, config.SERVO_MAX_ANGLE)
-
-	# sweep(servo1, "servo1 (pin {})".format(config.SERVO_1_PIN))
-	# time.sleep(1)
-	# sweep(servo2, "servo2 (pin {})".format(config.SERVO_2_PIN))
-	# time.sleep(1)
-
-	# print("moving both together")
-	# midpoint = (config.SERVO_MIN_ANGLE + config.SERVO_MAX_ANGLE) // 2
-	# for angle in (config.SERVO_MIN_ANGLE, midpoint, config.SERVO_MAX_ANGLE, midpoint):
-	#     servo1.set_angle(angle)
-	#     servo2.set_angle(angle)
-	#     print("  both -> {} deg".format(angle))
-	#     time.sleep(1)
-
-	# print("done -- both servos centered at {} deg".format(midpoint))
-
-	servo1.center()
-	servo2.center()
 
 if __name__ == "__main__":
 	main()

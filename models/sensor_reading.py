@@ -10,7 +10,7 @@ class SensorReading:
     def __init__(
         self,
         timestamp: tuple,
-        tilt_angle: int,
+        tilt_angle: float,
         temperature: float,
         humidity: float,
         pressure: float,

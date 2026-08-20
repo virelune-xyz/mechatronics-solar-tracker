@@ -27,6 +27,11 @@ class SunPositionCalculator:
         day_of_year = self.day_of_year(dt)
         declination_deg = self.solar_declination(day_of_year)
         hour_angle_deg = self.hour_angle(dt)
+        print(
+            "[DEBUG][sun_position_calculator] day_of_year={} declination_deg={:.2f} hour_angle_deg={:.2f}".format(
+                day_of_year, declination_deg, hour_angle_deg
+            )
+        )
 
         lat_rad = math.radians(self.latitude)
         decl_rad = math.radians(declination_deg)
@@ -44,6 +49,7 @@ class SunPositionCalculator:
         if abs(cos_elevation) < 1e-6:
             # sun directly overhead so its undefined; pick a stable fallback rather than dividing by ~0
             azimuth_deg = 180.0 if hour_angle_deg > 0 else 0.0
+            print("[DEBUG][sun_position_calculator] cos_elevation near zero, using azimuth fallback")
         else:
             cos_azimuth = (
                 math.sin(decl_rad) - math.sin(elevation_rad) * math.sin(lat_rad)
@@ -53,6 +59,11 @@ class SunPositionCalculator:
             if hour_angle_deg > 0:
                 azimuth_deg = 360.0 - azimuth_deg
 
+        print(
+            "[DEBUG][sun_position_calculator] calculate_position({}) -> elevation={:.2f} azimuth={:.2f}".format(
+                dt, elevation_deg, azimuth_deg
+            )
+        )
         return (elevation_deg, azimuth_deg)
 
     def day_of_year(self, dt: tuple) -> int:
@@ -61,11 +72,15 @@ class SunPositionCalculator:
         is_leap = (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
         if is_leap:
             days_in_month[1] = 29
-        return sum(days_in_month[: month - 1]) + day
+        result = sum(days_in_month[: month - 1]) + day
+        print("[DEBUG][sun_position_calculator] day_of_year({}) -> {}".format(dt, result))
+        return result
 
     def solar_declination(self, day_of_year: int) -> float:
         # coopers equation, degrees
-        return 23.45 * math.sin(math.radians(360.0 / 365.0 * (284 + day_of_year)))
+        result = 23.45 * math.sin(math.radians(360.0 / 365.0 * (284 + day_of_year)))
+        print("[DEBUG][sun_position_calculator] solar_declination({}) -> {:.2f}".format(day_of_year, result))
+        return result
 
     def hour_angle(self, dt: tuple) -> float:
         hour, minute, second = dt[3], dt[4], dt[5]
@@ -86,4 +101,11 @@ class SunPositionCalculator:
         local_time_hr = hour + minute / 60.0 + second / 3600.0
         solar_time_hr = local_time_hr + time_correction_min / 60.0
 
-        return 15.0 * (solar_time_hr - 12.0)
+        result = 15.0 * (solar_time_hr - 12.0)
+        print(
+            "[DEBUG][sun_position_calculator] hour_angle: eot_min={:.2f} time_correction_min={:.2f} "
+            "local_time_hr={:.2f} solar_time_hr={:.2f} -> {:.2f}".format(
+                equation_of_time_min, time_correction_min, local_time_hr, solar_time_hr, result
+            )
+        )
+        return result
