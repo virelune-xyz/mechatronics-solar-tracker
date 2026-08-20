@@ -2,6 +2,9 @@ from machine import I2C, Pin
 import config
 from sensors.clock_module import ClockModule
 
+"""
+irrelevant file used for testing only and is not a part of the main project in any way
+"""
 
 def main() -> None:
     i2c = I2C(
@@ -12,10 +15,7 @@ def main() -> None:
     )
     clock = ClockModule(i2c)
 
-    # DS3231 tuple format: (year, month, day, hour, minute, second, weekday)
-    # weekday: 0=Monday ... 6=Sunday
-    # EDIT THIS LINE to match your actual current time before running:
-    now = (2026, 20, 8, 5, 38, 0, 3)   # e.g. Thu 20 Aug 2026, 9:05pm
+    now = (2026, 20, 8, 5, 38, 0, 3)
 
     clock.set_datetime(now)
     print("RTC set to:", clock.get_datetime())

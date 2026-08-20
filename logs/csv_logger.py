@@ -46,8 +46,7 @@ class CSVLogger:
 
     def read_all(self) -> str:
         """
-        return the full file contents as one string - useful for dumping
-        the whole log over serial on demand (see export_log() in test.py below)
+        return the full file contents as one string - useful for dumping the whole log over serial on demand)
         """
         with open(self.filename, "r") as f:
             contents = f.read()

@@ -1,8 +1,5 @@
 """
-sensors/sensor.py
-
-Abstract base class for all input/sensing hardware. Concrete
-subclasses live alongside this file in sensors/.
+abstract base class for all input/sensing hardware; concrete subclasses live alongside this file in sensors/.
 """
 
 from inputs.inputs import Inputs
