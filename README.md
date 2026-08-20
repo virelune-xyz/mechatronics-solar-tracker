@@ -1,4 +1,4 @@
-# Self-Sustaining Dual-Axis Solar Tracker
+# Self-Sustaining Single-Axis Solar Tracker
 A smart mechatronic prototype designed to maximize solar harvesting efficiency through real-time environmental monitoring and automated solar tracking.
 
 ## Overview
