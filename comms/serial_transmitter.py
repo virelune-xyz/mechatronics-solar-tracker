@@ -24,14 +24,29 @@ class SerialTransmitter(DataTransmitter):
 
     def send(self, reading) -> bool:
         """
-        dont format specially and send
+        send a reading as one CSV row over the connected USB serial stream
         """
         try:
-            self.uart_or_usb.write(str(reading.to_dict()) + "\n")
-            print("[DEBUG][serial_transmitter] send() OK")
+            row = reading.to_csv_row()
+            self.uart_or_usb.write(row + "\n")
+            print("[DEBUG][serial_transmitter] send() OK ->", row)
             return True
         except Exception as e:
             print("[DEBUG][serial_transmitter] send() FAILED:", e)
+            return False
+
+    def send_logs(self, readings) -> bool:
+        """send each logged reading as a CSV row over the USB connection"""
+        try:
+            sent_count = 0
+            for reading in readings:
+                if not self.send(reading):
+                    return False
+                sent_count += 1
+            print("[DEBUG][serial_transmitter] send_logs() OK -> {} readings".format(sent_count))
+            return True
+        except Exception as e:
+            print("[DEBUG][serial_transmitter] send_logs() FAILED:", e)
             return False
 
     def send_csv_row(self, reading) -> bool:

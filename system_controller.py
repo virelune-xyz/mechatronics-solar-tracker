@@ -79,9 +79,11 @@ class SystemController:
         print("[DEBUG][system_controller] track_sun() at", timestamp)
         self.tracker.track(timestamp)
 
-    def transmit_data(self, reading: SensorReading):
-        success = self.transmitter.send(reading)
-        print("[DEBUG][system_controller] transmit_data() -> success={}".format(success))
+    def transmit_logs(self, readings):
+        success = self.transmitter.send_logs(readings)
+        print("[DEBUG][system_controller] transmit_logs() -> count={} success={}".format(
+            len(readings), success
+        ))
 
     def run(self):
         """
@@ -96,7 +98,7 @@ class SystemController:
             reading = self.collect_data()
             self.logger.add_reading(reading)
             self.update_display(reading)
-            self.transmit_data(reading)
+            self.transmit_logs([reading])
             print("[DEBUG][system_controller] loop iteration {} done, sleeping {}s".format(
                 loop_count, self.update_interval_sec
             ))

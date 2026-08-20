@@ -22,20 +22,28 @@ class SingleAxisTracker:
         calc the suns current elevation for timestamp dt via self.calculator then call self.move_to() with the resulting angle. calls once per systemcontroller loop iteration
         """
         elevation_deg, azimuth_deg = self.calculator.calculate_position(dt)
+        is_afternoon = dt[3] >= 12
         print("[DEBUG][single_axis_tracker] track(dt={}) -> elevation={:.2f} azimuth={:.2f}".format(
             dt, elevation_deg, azimuth_deg
         ))
-        self.move_to(elevation_deg)
+        print("[DEBUG][single_axis_tracker] hour={} -> {} direction".format(
+            dt[3], "afternoon" if is_afternoon else "morning"
+        ))
+        self.move_to(elevation_deg, is_afternoon)
 
-    def move_to(self, elevation: float):
+    def move_to(self, elevation: float, is_afternoon: bool = False):
         """
-        move both servos to elevation; need to mirror one (change the angle to be the opposite) since theyre on opposite sides
+        move both servos toward the sun; mirror one since theyre on opposite sides
         """
-        print("[DEBUG][single_axis_tracker] move_to(elevation={})".format(elevation))
+        print("[DEBUG][single_axis_tracker] move_to(elevation={}, is_afternoon={})".format(
+            elevation, is_afternoon
+        ))
 
         elevation_clamped = max(0.0, min(90.0, elevation))
         servo_range = self.servo1.max_angle - self.servo1.min_angle
         target_angle = self.servo1.min_angle + (elevation_clamped / 90.0) * servo_range
+        if is_afternoon:
+            target_angle = self.servo1.min_angle + self.servo1.max_angle - target_angle
         print("[DEBUG][single_axis_tracker] scaled elevation {:.2f} -> servo angle {:.2f} (range {}-{})".format(
             elevation, target_angle, self.servo1.min_angle, self.servo1.max_angle
         ))
