@@ -97,12 +97,12 @@ class BME280:
 		dig_88_a1 = self.i2c.readfrom_mem(self.address, 0x88, 26)
 		dig_e1_e7 = self.i2c.readfrom_mem(self.address, 0xE1, 7)
 
-		self.dig_T1, self.dig_T2, self.dig_T3, self.dig_P1, \
-			self.dig_P2, self.dig_P3, self.dig_P4, self.dig_P5, \
-			self.dig_P6, self.dig_P7, self.dig_P8, self.dig_P9, \
+		self.dig_T1, self.dig_T2, self.dig_T3, self.dig_P1, \r
+			self.dig_P2, self.dig_P3, self.dig_P4, self.dig_P5, \r
+			self.dig_P6, self.dig_P7, self.dig_P8, self.dig_P9, \r
 			_, self.dig_H1 = unpack("<HhhHhhhhhhhhBB", dig_88_a1)
 
-		self.dig_H2, self.dig_H3, self.dig_H4,\
+		self.dig_H2, self.dig_H3, self.dig_H4,\r
 			self.dig_H5, self.dig_H6 = unpack("<hBbhb", dig_e1_e7)
 		# unfold H4, H5, keeping care of a potential sign
 		self.dig_H4 = (self.dig_H4 * 16) + (self.dig_H5 & 0xF)

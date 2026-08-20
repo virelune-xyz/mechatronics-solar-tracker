@@ -1,31 +1,25 @@
-# from machine import I2C, Pin
-
+from machine import I2C, Pin
 import config
-# from sensors.clock_module import ClockModule
-from comms.serial_transmitter import SerialTransmitter
-from models.sensor_reading import SensorReading
+from sensors.clock_module import ClockModule
 
 
 def main() -> None:
-	# i2c = I2C(
-	# 	config.I2C_ID,
-	# 	sda=Pin(config.I2C_SDA_PIN),
-	# 	scl=Pin(config.I2C_SCL_PIN),
-	# 	freq=config.I2C_FREQ_HZ,
-	# )
-	# clock = ClockModule(i2c)
-	# clock.set_datetime((2026, 8, 20, 12, 0, 0, 0))
-	# print(clock.get_datetime())
+    i2c = I2C(
+        config.I2C_ID,
+        sda=Pin(config.I2C_SDA_PIN),
+        scl=Pin(config.I2C_SCL_PIN),
+        freq=config.I2C_FREQ_HZ,
+    )
+    clock = ClockModule(i2c)
 
-	transmitter = SerialTransmitter(config.SERIAL_BAUDRATE)
-	readings = [
-		SensorReading((2026, 8, 20, 12, 0, 0, 0), 90, 25.5, 40.0, 1013.2),
-		SensorReading((2026, 8, 20, 12, 1, 0, 0), 91, 25.7, 40.5, 1013.1),
-	]
+    # DS3231 tuple format: (year, month, day, hour, minute, second, weekday)
+    # weekday: 0=Monday ... 6=Sunday
+    # EDIT THIS LINE to match your actual current time before running:
+    now = (2026, 20, 8, 5, 38, 0, 3)   # e.g. Thu 20 Aug 2026, 9:05pm
 
-	success = transmitter.send_logs(readings)
-	print("log transmission successful:", success)
+    clock.set_datetime(now)
+    print("RTC set to:", clock.get_datetime())
 
 
 if __name__ == "__main__":
-	main()
+    main()

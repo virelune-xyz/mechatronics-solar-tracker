@@ -11,6 +11,8 @@ from logs.data_logger import DataLogger
 from comms.serial_transmitter import SerialTransmitter
 from system_controller import SystemController
 
+from logs.csv_logger import CSVLogger
+
 """
 only job is hardware construction (machine.I2C/ADC/pin setup) and wiring the objects into a SystemController. only runs once
 """
@@ -63,6 +65,9 @@ def main():
     print("[DEBUG][main] constructing SerialTransmitter")
     transmitter = SerialTransmitter(config.SERIAL_BAUDRATE)
 
+    print("[DEBUG][main] constructing CSVLogger")
+    csv_logger = CSVLogger(config.CSV_LOG_FILENAME)
+
     print("[DEBUG][main] constructing SystemController")
     controller = SystemController(
         clock=clock,
@@ -71,6 +76,7 @@ def main():
         display=display,
         logger=logger,
         transmitter=transmitter,
+        csv_logger=csv_logger,
         update_interval_sec=config.UPDATE_INTERVAL_SEC,
     )
 

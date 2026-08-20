@@ -25,3 +25,12 @@ SITE_UTC_OFFSET = 10
 # system
 UPDATE_INTERVAL_SEC = 10
 DATA_LOGGER_MAX_ENTRIES = 500
+
+# tracking / smoothing
+AZIMUTH_SUNRISE_DEG = 90.0
+AZIMUTH_SUNSET_DEG = -90.0
+SERVO_STEP_DEGREES = 2      # smaller = smoother but slower
+SERVO_STEP_DELAY_MS = 15    # delay between each step
+
+# csv logging
+CSV_LOG_FILENAME = "solar_tracker_log.csv"

@@ -9,6 +9,8 @@ from comms.data_transmitter import DataTransmitter
 from models.sensor_reading import SensorReading
 import config
 
+from logs.csv_logger import CSVLogger
+
 
 class SystemController:
     """
@@ -23,6 +25,7 @@ class SystemController:
         display: OLEDDisplay,
         logger: DataLogger,
         transmitter: DataTransmitter,
+        csv_logger: CSVLogger,
         update_interval_sec: int = config.UPDATE_INTERVAL_SEC,
     ):
         self.clock = clock
@@ -31,6 +34,7 @@ class SystemController:
         self.display = display
         self.logger = logger
         self.transmitter = transmitter
+        self.csv_logger = csv_logger
         self.update_interval_sec = update_interval_sec
 
     def initialize(self):
@@ -97,6 +101,7 @@ class SystemController:
             self.track_sun()
             reading = self.collect_data()
             self.logger.add_reading(reading)
+            self.csv_logger.append(reading)
             self.update_display(reading)
             self.transmit_logs([reading])
             print("[DEBUG][system_controller] loop iteration {} done, sleeping {}s".format(
