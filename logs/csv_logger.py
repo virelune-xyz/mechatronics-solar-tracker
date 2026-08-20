@@ -1,7 +1,5 @@
 """
-persists sensorreadings to a csv file on the pico's flash storage so they
-survive power loss and can be pulled off over usb (e.g. thonny's file panel,
-or `mpremote cp`) for analysis on a pc
+persists sensorreadings to a csv file on the picos flash storage so they survive power loss and can be pulled off over usb for analysis on a pc
 """
 
 import os

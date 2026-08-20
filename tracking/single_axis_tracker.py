@@ -35,11 +35,6 @@ class SingleAxisTracker:
     def move_to(self, azimuth_deg: float):
         """
         map the sun's azimuth linearly onto the servo range.
-
-        southern-hemisphere site: the sun transits due north at solar noon, so
-        raw azimuth crosses through 0/360 right around noon. we "unwrap" it
-        into a signed range centred on 0 (due north) so the mapping stays
-        continuous instead of clamping to an extreme at the wrap point.
         """
         unwrapped = azimuth_deg - 360.0 if azimuth_deg > 180.0 else azimuth_deg
 

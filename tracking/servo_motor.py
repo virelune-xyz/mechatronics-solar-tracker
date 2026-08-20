@@ -38,8 +38,7 @@ class ServoMotor(Outputs):
 
     def set_angle(self, angle: float, smooth: bool = True):
         """
-        move the servo to angle degrees, clamped to min/max.
-        by default sweeps there in small steps instead of jumping instantly.
+        move the servo to angle degrees, clamped to min/max; by default sweeps there in small steps instead of jumping instantly
         """
         clamped = max(self.min_angle, min(self.max_angle, angle))
         print("[DEBUG][servo_motor] pin {}: set_angle({}) -> clamped={}".format(
