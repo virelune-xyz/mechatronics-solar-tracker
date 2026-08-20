@@ -38,6 +38,7 @@ The design focuses on simplicity, leveraging only two core input sensors to orch
 ├── 📁 inputs/                   		<-- Input device abstractions
 │   └── 📄 inputs.py             		<-- Marker superclass for input devices
 ├── 📁 logs/                     		<-- Data logging and storage
+│   ├── 📄 csv_logger.py       	     	<-- Creates a CSV log for the data_logger to work with.
 │   └── 📄 data_logger.py        		<-- In-memory log of sensor readings
 ├── 📁 models/                   		<-- Data models and containers
 │   └── 📄 sensor_reading.py     		<-- Timestamped sensor data container
